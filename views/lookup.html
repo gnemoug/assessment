@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}
+查看互评
+{% endblock %}
+{% block assessments %}
+<a href="#" class="nav-top-item current">
+    互评
+</a>
+<ul>
+    {% if user.role == "student" %}
+    <li><a href="{{app}}edit">进行互评</a></li>
+    {% endif %}
+    {% if user.role != "student" %}
+    <li><a class="current" href="{{app}}lookup">查看互评</a></li>
+    {% endif %}
+</ul>
+{% endblock %}
+{% block content %}
+<div id="main-content"> 
+<div class="content-head"><h2>查看互评</h2></div>
+<div class="clear"></div>
+<div class="content-box">
+    <div class="content-box-header">
+        <h3>互评信息</h3>
+        <div class="clear"></div>
+    </div>
+    <div class="content-box-content">
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                       <th>姓名</th>
+                       <th>学号</th>
+                       <th>性别</th>
+                       {% for option in options %}
+                            <th>{{option.option|e}}</th>
+                       {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr class="{{loop.cycle('alt-row','')}}">
+                        <td>{{student.name}}</td>
+                        <td>{{student.schoolid}}</td>
+                        <td>{{student.sex}}</td>
+                        {% for option in options %}
+                            <td>{{student[option.option]}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}
+</div> 
+{% endblock %}

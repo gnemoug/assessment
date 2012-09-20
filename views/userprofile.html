@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}
+我
+{% endblock %}
+{% block user %}
+<a href="#" class="nav-top-item current">
+    用户
+</a>
+<ul>
+    <li><a class="current" href="{{app}}user">用户信息</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<div id="main-content">
+<div class="content-head"><h2>用户信息</h2></div>
+<div class="clear"></div>
+    <div class="userprofile">
+        <form action="{{app}}user" method="post">
+<div id="chpwd">
+            <li>学号</li>
+            <li><input type="text" maxlength="200" class="userprofile-input" value="{{user.schoolid}}" name="schoolid" readonly="readonly"/>
+            </li>
+            <li>姓名</li>
+            <li><input type="text" maxlength="200" class="userprofile-input" value="{{user.name}}" name="name" readonly="readonly"/>
+            </li>
+            <li>性别</li>
+            <li><input type="text" maxlength="200" class="userprofile-input" value="{{user.sex}}" name="sex" readonly="readonly"/></li>
+        </form>
+    </div>
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}
+</div> 
+{% endblock %}

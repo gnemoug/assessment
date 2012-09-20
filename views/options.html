@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}
+互评选项管理
+{% endblock %}
+{% block system %}
+<a href="{{app}}manage" class="nav-top-item current">
+    系统设置
+</a>
+<ul>
+    <li><a href="{{app}}manage/users">用户管理</a></li>
+    <li><a class="current" href="{{app}}manage/options">互评选项管理</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<div id="main-content">
+<div class="content-head"><h2>互评选项管理</h2></div>
+<div class="clear"></div>
+    <div class="show-options"><h3>
+        互评选项：
+    </h3></div>
+    <form action="{{app}}manage/options" method="post">
+        {% if options %}
+        <div class="options">
+            {% for option in options%}
+            <input type="checkbox" name="{{option._id}}" value="" />{{option.option}}
+            {% endfor %}
+        </div>
+        <input type="submit" class="submit" name="submit" id="submit" value="删除">
+        {% endif %}
+    </form>
+    <div class="show-options"><h3>
+        增加互评选项：
+    </h3></div>
+    <form action="{{app}}manage/options" method="post">
+        <input type="text" maxlength="200" class="options-input" value="" name="add-option" />
+        {% if error_repeate %}
+            <div class="error">{{error_repeate}}</div>
+        {% endif %}
+        <div class="add-options"><input type="submit" class="submit" name="submit" id="submit" value="增加"></div>
+    </form>
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}
+</div> 
+{% endblock %}

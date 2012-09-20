@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset='utf-8'>
+    <title>同学互评系统|{{user.name}}|{% block title %}{% endblock %}</title>
+    <script type="text/javascript" src="static/js/jquery.js"></script> 
+    <link rel="stylesheet" href="static/css/reset.css" type="text/css" media="screen"> 
+    <link rel="stylesheet" href="static/css/style.css" type="text/css" media="screen"> 
+    {% block extrastyle %}{% endblock %}
+    <script type="text/javascript" src="static/js/guomeng.content.js"></script>
+    {% block extrahead %}{% endblock %}
+    {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+</head>
+<body>
+    <div id="body-wrapper">
+        <div id="sidebar">
+            <div id="sidebar-wrapper">
+            <a href="{{app}}"><img id="logo" src="./static/images/logo.png" alt="同学互评系统" /></a>
+            <div id="profile-links">
+                你好, {{user.name}}！
+                <br/>
+                <a href="{{app}}changepasswd" title="修改密码">修改密码</a> | <a href="{{app}}logout" title="登出">登出</a>
+            </div>
+            <ul id="main-nav">
+            {% if user.role == "superadmin" %}
+            <li>
+                {% block system %}
+                <a href="{{app}}manage" class="nav-top-item">
+                系统设置
+                </a>
+                <ul>
+                    <li><a href="{{app}}manage/users">用户管理</a></li>
+                    <li><a href="{{app}}manage/options">互评选项管理</a></li>
+                </ul>
+                {% endblock %}
+            </li>
+            {% endif %}
+            <li> 
+                {% block assessments %}
+                <a href="#" class="nav-top-item">
+                    互评
+                </a>
+                <ul>
+                    {% if user.role == "student" %}
+                    <li><a href="{{app}}edit">进行互评</a></li>
+                    {% endif %}
+                    {% if user.role != "student" %}
+                    <li><a href="{{app}}lookup">查看互评</a></li>
+                    {% endif %}
+                </ul>
+                {% endblock %}
+            </li>
+            {% if user.role == "student" %}
+            <li>
+                {% block user %}
+                <a href="#" class="nav-top-item">
+                    用户
+                </a>
+                <ul>
+                    <li><a href="{{app}}user">用户信息</a></li>
+                </ul>
+                {% endblock %}
+            </li>
+            {% endif %}
+            <li>
+                {% block about %}
+                <a href="#" class="nav-top-item">
+                    关于
+                </a>
+                <ul>
+                    <li><a href="{{app}}about/author">关于作者</a></li>
+                    <li><a href="{{app}}about/copyright">版权声明</a></li>
+                </ul>
+                {% endblock %}
+            </li>
+            </ul>
+            </div>
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

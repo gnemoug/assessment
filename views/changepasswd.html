@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}
+修改密码
+{% endblock %}
+{% block content %}
+<div id="main-content">
+<div class="content-head"><h2>修改密码</h2></div>
+<div class="clear"></div>
+    <div class="changepasswd">
+        <form action="{{app}}changepasswd" method="post">
+<div id="chpwd">
+            <li>当前密码</li>
+            <li><input type="password" maxlength="200" class="changepassed-input" value="" name="oldpass" />
+            {% if error_oldpass %}
+                <div class="error">{{error_oldpass}}</div>
+            {% endif %}
+            </li>
+            <li>新密码</li>
+            <li><input type="password" maxlength="200" class="changepassed-input" value="" name="newpass" />
+            {% if error_repeate %}
+                <div class="error">{{error_repeate}}</div>
+            {% endif %}
+            </li>
+            <li>重复新密码</li>
+            <li><input type="password" maxlength="200" class="changepassed-input" value="" name="repeatpass" /></li>
+            <li><input type="submit" value="确认修改" class="submit" /></li>
+        </form>
+    </div>
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}
+</div> 
+{% endblock %}

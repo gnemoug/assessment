@@ -1,0 +1,507 @@
+@charset "utf-8";
+/********************************      Basic Structure      ********************************/
+html {
+    font-size: 100%;
+    height: 100%;
+    margin-top: 1px;
+/* Always show a scrollbar to avoid jumping when the scrollbar appears  */
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background:url('../images/bg-body.gif') top left repeat-y;
+    font-size: 12px;
+}
+
+/********************************      Elements styling      ********************************/
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: Helvetica, Arial, sans-serif;
+    color: #222;
+    font-weight: bold;
+}
+
+h1 {
+    font-family: Calibri, Helvetica, Arial, sans-serif;
+    font-size: 31px;
+    font-weight: bold;
+    color: #fff;
+    position: absolute;
+    top: -1000px;
+/* Remove this line and delete the logo (in the HTML) if you don't want an image as a logo */
+}
+
+h2 {
+    font-size: 26px;
+    padding: 0 0 10px 0;
+}
+
+h3 {
+    font-size: 17px;
+    padding: 0 0 10px 0;
+}
+
+h4 {
+    font-size: 16px;
+    padding: 0 0 5px 0;
+}
+
+h5 {
+    font-size: 14px;
+    padding: 0 0 5px 0;
+}
+
+h6 {
+    font-size: 12px;
+    padding: 0 0 5px 0;
+}
+
+a {
+    color: #57a000;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+}
+
+a:active {
+    color: #777;
+}
+
+a:focus {
+    outline: 1px;
+}
+
+strong {
+    font-weight: bold;
+    color: #333;
+}
+
+small {
+    font-size: 0.85em;
+}
+
+pre {
+    font-family: monospace;
+}
+
+p {
+    padding: 5px 0 10px 0;
+    line-height: 1.6em;
+}
+/********************************      General Classes      ********************************/
+
+.clear {
+    clear: both;
+}
+
+.align-left {
+    float: left;
+}
+
+.align-right {
+    float: right;
+}
+
+.error {
+    font-size: 12px !important;
+    display: inline;
+    padding: 4px 5px 4px 25px;
+    margin: 0 0 3px 10px;
+    border: 1px solid red;
+    color: red;
+    background: #ffc url(../images/icon_error.gif) 5px .3em no-repeat;
+}
+
+.submit:hover {
+    text-decoration: underline;
+}
+
+.submit {
+    font-family: Verdana, Arial, sans-serif;
+    display: inline-block;
+    background: #459300 url('../images/bg-button-green.gif') top left repeat-x !important;
+    border: 1px solid #459300 !important;
+    padding: 4px 7px 4px 7px !important;
+    color: #fff !important;
+    font-size: 15px !important;
+    cursor: pointer;
+}
+
+/************ Button ************/
+.button {
+    font-family: Verdana, Arial, sans-serif;
+    display: inline-block;
+    background:#459300 url('../images/bg-button-green.gif') top left repeat-x !important;
+    border: 1px solid #459300 !important;
+    padding: 4px 7px 4px 7px !important;
+    color: #fff !important;
+    font-size: 11px !important;
+    cursor: pointer;
+}
+
+.button:hover {
+    text-decoration: underline;
+}
+
+.button:active {
+    padding: 5px 7px 3px 7px !important;
+}
+
+/********************************      Sidebar      ********************************/
+
+#sidebar {
+    background: url('../images/bg-sidebar.gif') top left no-repeat;
+    width: 230px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #888;
+    font-size: 11px;
+}
+
+#sidebar a:hover {
+    color:#fff;
+}
+
+#sidebar a, #sidebar a:active {
+    color: #ccc;
+}
+
+#sidebar #logo {
+    margin: 0 0 0 40px;
+}
+
+#sidebar #sidebar-wrapper {
+    margin: 0 0 0 9px;
+}
+
+#sidebar #profile-links {
+    padding: 0 15px 20px 15px;
+    text-align: right;
+    line-height: 1.5em;
+    font-size: 1.5em;
+}
+
+#sidebar #main-nav {
+    width: 206px;
+    padding: 0;
+    margin: 0 0 0 15px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+#sidebar #main-nav li {
+    list-style: none;
+    text-align: right;
+    margin:10px 0;
+}
+
+#sidebar #main-nav li a.nav-top-item {
+    background: transparent url('../images/bg-menu-item-green.gif') right center no-repeat;
+    padding: 10px 15px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+}
+
+#sidebar #main-nav li a.current {
+    background-image: url('../images/bg-menu-item-current.gif') !important;
+    color: #333;
+    font-weight: bold;
+}
+
+#sidebar #main-nav ul {
+    padding: 0;
+    font-size: 12px;
+    margin: 0;
+}
+
+#sidebar #main-nav ul li {
+    list-style: none;
+    text-align: right;
+}
+
+#sidebar #main-nav ul li a {
+    padding: 8px 15px;
+    display: block;
+    color: #aaa;
+    font-size: 13px;
+    line-height: 1.2em;
+}
+
+#sidebar #main-nav ul li a:hover,
+#sidebar #main-nav ul li a.current,
+#sidebar #main-nav ul li a.current:hover {
+    color: #fff;
+}
+
+#sidebar #main-nav ul li a.current {
+    background: transparent url('../images/menu-current-arrow.gif') right center no-repeat !important;
+}
+
+/********************************      Main Content      ********************************/
+
+/************ Layout ************/
+
+#main-content {
+    margin: 0 30px 0 260px;
+    padding: 40px 0 0 0;
+}
+
+#footer {
+    border-top: 1px solid #ccc;
+    margin: 40px 0 0 0;
+    padding: 20px 0;
+    font-size: 12px;
+    text-align:center;
+}
+
+/*************** Content Box ***************/
+
+.content-head{
+    margin-bottom:15px;
+    text-align:center;
+}
+
+.content-box {
+    border: 1px solid #ccc;
+    margin: 0 0 20px 0;
+    background: #fff;
+}
+
+.content-box-header {
+    background: #e5e5e5 url('../images/bg-content-box.gif') top left repeat-x;
+    margin-top: 1px;
+    height: 40px;
+}
+
+.content-box-header h3 {
+    padding: 12px 15px 10px;
+    float: left;
+    cursor:s-resize;
+}
+
+.content-box-content {
+    padding: 0;
+    font-size: 13px;
+    border-top: 1px solid #ccc;
+}
+
+/************ Table ************/
+
+#main-content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#main-content table thead th {
+    font-weight: bold;
+    font-size: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+#main-content tbody {
+    border-bottom: 1px solid #ddd;
+}
+
+#main-content tbody tr {
+    background: #fff;
+}
+
+#main-content tbody tr.alt-row {
+    background: #f3f3f3;
+}
+
+#main-content table th {
+    padding: 10px;
+    line-height: 1.3em;
+    text-align:center;
+}
+
+#main-content table td{
+    padding: 5px 10px;
+    line-height: 1.0em;
+    text-align:center;
+}
+
+#main-content table tfoot td .bulk-actions {
+    padding: 15px 0 5px 0;
+} 
+
+#main-content table tfoot td .bulk-actions select {
+    padding: 4px;
+    border: 1px solid #ccc;
+}
+
+/************ about-author ************/
+
+.about-author{
+    margin-top:60px;
+    text-align:center;
+    font-size:15px;
+}
+
+.about-author li{
+    padding:15px 0;
+}
+
+/************ about-copyright ************/
+
+.about-copyright{
+    margin-top:60px;
+    text-align:center;
+    font-size:15px;
+}
+
+/************ changepasswd ************/
+
+.changepasswd{
+    margin-top:60px;
+    font-size:15px;
+}
+
+.changepasswd li{
+    list-style: none;
+    margin:10px 0;
+}
+
+.changepasswd .changepassed-input{
+    width: 25%;
+    padding: 6px;
+    font-size: 13px;
+    background: #fff url('../images/bg-form-field.gif') top left repeat-x;
+    border: 1px solid #d5d5d5;
+    color: #333;
+}
+
+/************ options ************/
+
+.show-options{
+    margin:25px 0;
+}
+
+.show-options h3{
+    font-size:25px;
+}
+
+.options {
+    font-size:20px;
+    border: 1px #d5d5d5;
+}
+
+.options input{
+    margin:10px 10px 10px 50px;
+    padding: 6px;
+}
+
+.options-input{
+    width: 25%;
+    padding: 6px;
+    font-size: 13px;
+    background: #fff url('../images/bg-form-field.gif') top left repeat-x;
+    border: 1px solid #d5d5d5;
+    color: #333;
+}
+
+.add-options{
+    margin:15px 0;
+}
+
+/************ manage-user ************/
+
+ul.content-box-tabs {
+    float: right;
+    padding: 12px 15px 0 0 !important;
+    margin: 0 !important;
+}
+
+ul.content-box-tabs li {
+    float: left;
+    margin: 0;
+    padding: 0 !important;
+    background-image: none !important;
+    font-size:15px;
+}
+
+ul.content-box-tabs li a {
+    color: #333;
+    padding: 8px 10px;
+    display: block;
+    margin: 1px;
+    border-bottom: 0;
+}
+
+ul.content-box-tabs li a:hover {
+    color: #57a000;
+}
+
+ul.content-box-tabs li a.current {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-bottom: 0;
+    margin: 0;
+}
+
+.manage-user-input{
+    width: 25%;
+    padding: 6px;
+    font-size: 13px;
+    background: #fff url('../images/bg-form-field.gif') top left repeat-x;
+    border: 1px solid #d5d5d5;
+    color: #333;
+}
+
+.user{
+    font-size:20px;
+    border: 1px #d5d5d5;
+    margin:15px 0 0 50px;
+}
+
+.user input{
+    margin:10px 10px 10px 50px;
+    padding: 6px;
+}
+
+.user li{
+    list-style:none;
+}
+
+.user .sex{
+    margin:10px 10px 10px 50px;
+
+}
+
+.user .sex select{
+    font-size:15px;
+}
+
+.tab-content .user-submit{
+    margin:10px 10px 10px 200px;
+}
+
+/************ userprofile ************/
+
+.userprofile{
+    margin-top:60px;
+    font-size:15px;
+    text-align:center;
+}
+
+.userprofile li{
+    list-style: none;
+    margin:10px 0;
+}
+
+.userprofile .userprofile-input{
+    width: 25%;
+    padding: 6px;
+    font-size: 13px;
+    background: #fff url('../images/bg-form-field.gif') top left repeat-x;
+    border: 1px solid #d5d5d5;
+    color: #333;
+    text-align:center;
+}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}
+我
+{% endblock %}
+{% block about %}
+<a href="#" class="nav-top-item current">
+    关于
+</a>
+<ul>
+    <li><a class="current" href="{{app}}about/author">关于作者</a></li>
+    <li><a href="{{app}}about/copyright">版权声明</a></li>
+</ul>
+{% endblock %}
+{% block content %}
+<div id="main-content">
+<div class="content-head"><h2>我</h2></div>
+<div class="clear"></div>
+    <div class="about-author">
+    <ul type="circle">
+        <li>我的地址：哈工大(威海)</li>
+        <li>我的邮箱:gnemoug@gmail.com</li>
+        <li>我的豆瓣:<a href="http://www.douban.com/" title="豆瓣">http://www.douban.com/</a></li>
+        <li>我的博客:<a href="http://my.oschina.net/taisha/blog" title="博客">http://my.oschina.net/taisha/blog</a></li>
+    </ul>
+    </div>
+{% block footer %}
+    {% include 'footer.html' %}
+{% endblock %}
+</div> 
+{% endblock %}
