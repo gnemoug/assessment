@@ -483,6 +483,64 @@ ul.content-box-tabs li a.current {
     margin:10px 10px 10px 200px;
 }
 
+/********************* paginator ******************************/
+
+.paginator{
+    padding:10px 0 10px;
+    white-space:nowrap;
+    text-align:center;
+    font-size:12px;     
+}
+
+.paginator li{
+    display:inline;
+    margin:0 1px;
+    vertical-align:middle;
+}
+
+.paginator li.paginator-current{
+    height:24px;
+    margin:0 6px;
+    font-weight:bold;
+    line-height:24px;
+}
+
+.paginator li a{
+    display:inline-block;
+    height:22px;
+    padding:3px 6px 4px;
+    padding:0 6px;
+    border:1px solid #bbb;
+    text-decoration:none;
+    line-height:22px;
+    position:relative;
+}
+
+.paginator li a:hover{
+    height:24px;
+    padding:4px 7px 5px;
+    padding:0 7px;
+    border:none;
+    line-height:
+    24px;background:#00ADB2;
+    color:#fff;
+    text-decoration:none;
+}
+
+.paginator li a.nolink{
+    color:#ccc;
+    cursor:default;
+}
+
+.paginator li a.nolink:hover{
+    background:transparent;
+    height:22px;
+    padding:3px 6px 4px;
+    padding:0 6px;
+    border:1px solid #ccc;
+    line-height:22px;
+}
+
 /************ userprofile ************/
 
 .userprofile{

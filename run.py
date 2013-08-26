@@ -1,9 +1,6 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
-'''
-    author:guomeng
-    email:gnemoug@gmail.com
-'''
+
 import settings
 #from bottle import default_app as assessment
 from engine import engine

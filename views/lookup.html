@@ -38,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for student in students %}
+                    {% for student in students.object_list %}
                     <tr class="{{loop.cycle('alt-row','')}}">
                         <td>{{student.name}}</td>
                         <td>{{student.schoolid}}</td>
@@ -50,6 +50,29 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <div class="paginator">
+                <ul>
+                    {% if show_firstpage %}
+                        <a href="{{app}}lookup/1">首页</a>
+                    {% endif %}
+                    {% if students.has_previous %}
+                        <li> <a href="{{app}}lookup/{{ students.previous_page_number }}">上一页</a></li>
+                    {% endif %}
+                    {% for one in page_range %}
+                        {% if one == students.number %}
+                            <li class="paginator-current">{{ students.number }}</li>
+                        {% else %}
+                            <li><a href="{{app}}lookup/{{ one }}">{{one}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if students.has_next %}
+                        <li><a href="{{app}}lookup/{{ students.next_page_number }}">下一页</a></li>
+                    {% endif %}
+                    {% if show_lastpage %}
+                        <a href="{{app}}lookup/{{num_pages}}">尾页</a>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
 </div>

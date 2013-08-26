@@ -26,7 +26,7 @@
     </div>
     <div class="content-box-content">
         <div>
-            <form action="http://0.0.0.0:9999/admin/articles/bulkdel" method="post">
+            <form  method="post">
             <table>
                 <thead>
                     <tr>
@@ -39,7 +39,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for student in pro_others %}
+                    {% for student in pro_others.object_list %}
                     <tr class="{{loop.cycle('alt-row','')}}">
                         <td>{{student.name}}</td>
                         <td>{{student.schoolid}}</td>
@@ -57,6 +57,29 @@
                 </tbody>
             </table>
             </form>
+            <div class="paginator">
+                <ul>
+                    {% if show_firstpage %}
+                        <a href="{{app}}edit/1">首页</a>
+                    {% endif %}
+                    {% if pro_others.has_previous %}
+                        <li> <a href="{{app}}edit/{{ pro_others.previous_page_number }}">上一页</a></li>
+                    {% endif %}
+                    {% for one in page_range %}
+                        {% if one == pro_others.number %}
+                            <li class="paginator-current">{{ pro_others.number }}</li>
+                        {% else %}
+                            <li><a href="{{app}}edit/{{ one }}">{{one}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if pro_others.has_next %}
+                        <li><a href="{{app}}edit/{{ pro_others.next_page_number }}">下一页</a></li>
+                    {% endif %}
+                    {% if show_lastpage %}
+                        <a href="{{app}}edit/{{num_pages}}">尾页</a>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
 </div>

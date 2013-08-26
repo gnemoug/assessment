@@ -38,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for user in users %}
+                    {% for user in users.object_list %}
                     <tr class="{{loop.cycle('alt-row','')}}">
                         <td><input type="checkbox" name="{{user._id}}" id="{{user._id}}" value=""></td>
                         <td class="edit">{{user.name}}</td>
@@ -63,6 +63,29 @@
                 </tfoot>
             </table>
             </form>
+            <div class="paginator">
+                <ul>
+                    {% if show_firstpage %}
+                        <a href="{{app}}manage/users/1">首页</a>
+                    {% endif %}
+                    {% if users.has_previous %}
+                        <li> <a href="{{app}}manage/users/{{ users.previous_page_number }}">上一页</a></li>
+                    {% endif %}
+                    {% for one in page_range %}
+                        {% if one == users.number %}
+                            <li class="paginator-current">{{ users.number }}</li>
+                        {% else %}
+                            <li><a href="{{app}}manage/users/{{ one }}">{{one}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if users.has_next %}
+                        <li><a href="{{app}}manage/users/{{ users.next_page_number }}">下一页</a></li>
+                    {% endif %}
+                    {% if show_lastpage %}
+                        <a href="{{app}}manage/users/{{num_pages}}">尾页</a>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
         <div class="tab-content" id="tab2">
             <div class="show-options"><h3>

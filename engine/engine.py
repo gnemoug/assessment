@@ -8,13 +8,17 @@ from en_decryption import checkpassword,encrypt
 from collections import OrderedDict
 from bson.objectid import ObjectId
 from auth import auth 
+from paginator import InvalidPage,PageNotAnInteger,EmptyPage,Paginator,Page
 import datetime
 
 mainapp = Bottle()
 
 #注意：由于前台html文件中的相对静态文件路由关系，则如此配置静态文件的路由规则
 @mainapp.route('/manage/static/<filename:path>')
+@mainapp.route('/manage/users/static/<filename:path>')
 @mainapp.route('/about/static/<filename:path>')
+@mainapp.route('/lookup/static/<filename:path>')
+@mainapp.route('/edit/static/<filename:path>')
 @mainapp.route('/static/<filename:path>')
 def send_static(filename):
     return static_file(filename, root='./static/')
@@ -42,6 +46,7 @@ def login_submit():
     if checkpassword(request.forms.get('pass'),user['passwd']):
         response.set_cookie('user',user['name'],secret='chermong')
         return redirect(chermongapp+'index') 
+        #or 利用 request.fullpath去替代chermongapp
     else:
         return login_form()
 
@@ -79,10 +84,76 @@ def lookup():
             if j.get('option') in origi_option.keys():
                 students[j.get('schoolid')][j.get('option')]+=1
 
-    students = students.values()
+    students = list(students.values())
     #students = [{'name':u'郭猛','schoolid':'101110312','sex':u'男',u'优':14,u'良':12,u'一般':5}]
     #注意：上面注释的写法，eg：u，数字的使用 
-    return jinja2_template('lookup.html',user = user,app = chermongapp,options = options,students = students)
+    
+    paginator = Paginator(students,10,0)
+    students = paginator.page(1)
+    page_range,num_pages = paginator.page_range,paginator.num_pages
+    show_firstpage,show_lastpage = False,True
+    show_pages = 5 
+    if num_pages <= show_pages:#当数量不足时
+        newpage_range = page_range
+    else:
+        newpage_range = list()
+        if 1 + show_pages > num_pages:#用于显示后几位
+            for pagenum in range(num_pages - show_pages + 1,num_pages + 1):
+                newpage_range.append(pagenum)
+        else:
+            for pagenum in range(1,1+show_pages):
+                newpage_range.append(pagenum)
+    
+    return jinja2_template('lookup.html',user = user,app = chermongapp,
+        options = options,students = students,show_firstpage=show_firstpage,
+        show_lastpage=show_lastpage,num_pages=num_pages,page_range=newpage_range)
+
+@mainapp.get('/lookup/<page:int>')
+@auth
+def lookup(page = 1):
+    """
+        显示查看页面
+    """
+    log.info("lookup")
+    user = request.get_cookie('user',secret="chermong")
+    user = db.user.find_one({'name':user})
+    options = list(db.options.find())
+    origi_option = {i.get('option'):0 for i in options}
+    students = OrderedDict()#利用OrderedDict实现快速查找
+    for i in db.user.find({'role':'student'}):
+        user_info = {'name':i.get('name'),'schoolid':i.get('schoolid'),'sex':i.get('sex')}
+        user_info.update(origi_option)
+        students[i.get('schoolid')] = user_info
+
+    for i in db.assessment.find():
+        for j in i.get('pro-others'):
+            if j.get('option') in origi_option.keys():
+                students[j.get('schoolid')][j.get('option')]+=1
+
+    students = list(students.values())
+    #students = [{'name':u'郭猛','schoolid':'101110312','sex':u'男',u'优':14,u'良':12,u'一般':5}]
+    #注意：上面注释的写法，eg：u，数字的使用 
+    
+    paginator = Paginator(students,10,0)
+    students = paginator.page(page)
+    page_range,num_pages = paginator.page_range,paginator.num_pages
+    show_firstpage = False if int(page) == 1 else True
+    show_lastpage = False if int(page) == num_pages else True
+    show_pages = 5 
+    if num_pages <= show_pages:#当数量不足时
+        newpage_range = page_range
+    else:
+        newpage_range = list()
+        if int(page) + show_pages > num_pages:#用于显示后几位
+            for pagenum in range(num_pages - show_pages + 1,num_pages + 1):
+                newpage_range.append(pagenum)
+        else:
+            for pagenum in range(int(page),int(page)+show_pages):
+                newpage_range.append(pagenum)
+    
+    return jinja2_template('lookup.html',user = user,app = chermongapp,
+        options = options,students = students,show_firstpage=show_firstpage,
+        show_lastpage=show_lastpage,num_pages=num_pages,page_range=newpage_range)
 
 @mainapp.get('/logout')
 def logout():
@@ -169,8 +240,60 @@ def manage_user():
     log.info("manage_user")
     user = request.get_cookie('user',secret="chermong")
     user = db.user.find_one({'name':user})
-    users = db.user.find()
-    return jinja2_template('manage-user.html',user = user,app = chermongapp,users = users)
+    users = list(db.user.find())
+    paginator = Paginator(users,10,0)
+    users = paginator.page(1)
+    page_range,num_pages = paginator.page_range,paginator.num_pages
+    show_firstpage,show_lastpage = False,True
+    show_pages = 5 
+    if num_pages <= show_pages:#当数量不足时
+        newpage_range = page_range
+    else:
+        newpage_range = list()
+        if 1 + show_pages > num_pages:#用于显示后几位
+            for pagenum in range(num_pages - show_pages + 1,num_pages + 1):
+                newpage_range.append(pagenum)
+        else:
+            for pagenum in range(1,1+show_pages):
+                newpage_range.append(pagenum)
+
+    return jinja2_template('manage-user.html',user = user,app = chermongapp,
+        users = users,show_firstpage=show_firstpage,show_lastpage=show_lastpage,
+        num_pages=num_pages,page_range=newpage_range)
+
+@mainapp.get('/manage/users/<page:int>')
+@auth
+def manage_user(page = 1):
+    """
+        查看用户信息
+    """
+    log.info("manage_user")
+    user = request.get_cookie('user',secret="chermong")
+    user = db.user.find_one({'name':user})
+    users = list(db.user.find())
+    paginator = Paginator(users,10,0)
+    try:
+        users = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        users = paginator.page(paginator.num_pages)
+    page_range,num_pages = paginator.page_range,paginator.num_pages
+    show_firstpage = False if int(page) == 1 else True
+    show_lastpage = False if int(page) == num_pages else True
+    show_pages = 5
+    if num_pages <= show_pages:#当数量不足时
+        newpage_range = page_range
+    else:
+        newpage_range = list()
+        if int(page) + show_pages > num_pages:#用于显示后几位
+            for pagenum in range(num_pages - show_pages + 1,num_pages + 1):
+                newpage_range.append(pagenum)
+        else:
+            for pagenum in range(int(page),int(page)+show_pages):
+                newpage_range.append(pagenum)
+
+    return jinja2_template('manage-user.html',user = user,app = chermongapp,
+        users = users,show_firstpage=show_firstpage,show_lastpage=show_lastpage,
+        num_pages=num_pages,page_range=newpage_range)
 
 @mainapp.post('/manage/options')
 @auth
@@ -272,6 +395,60 @@ def edit():
     user = db.user.find_one({'name':user})
     schoolid,option = request.query.get('schoolid'),request.query.get('option')
     db.assessment.update({'schoolid':user['schoolid'],"pro-others.schoolid":schoolid},{"$set":{"pro-others.$.option":option}})
-    pro_others = db.assessment.find_one({'schoolid':user['schoolid']},fields = ['pro-others'])
+    pro_others = list(db.assessment.find_one({'schoolid':user['schoolid']},fields = ['pro-others'])['pro-others'])
     options = list(db.options.find())#因为返回的是一个类似的list的cursor,但是它只能循环一次,所以将它转换为list
-    return jinja2_template('edit-assessment.html',user = user,app = chermongapp,options = options,pro_others = pro_others['pro-others'])
+    
+    paginator = Paginator(pro_others,10,0)
+    pro_others = paginator.page(1)
+    page_range,num_pages = paginator.page_range,paginator.num_pages
+    show_firstpage,show_lastpage = False,True
+    show_pages = 5 
+    if num_pages <= show_pages:#当数量不足时
+        newpage_range = page_range
+    else:
+        newpage_range = list()
+        if 1 + show_pages > num_pages:#用于显示后几位
+            for pagenum in range(num_pages - show_pages + 1,num_pages + 1):
+                newpage_range.append(pagenum)
+        else:
+            for pagenum in range(1,1+show_pages):
+                newpage_range.append(pagenum)
+
+    return jinja2_template('edit-assessment.html',user = user,app = chermongapp,
+        options = options,pro_others = pro_others,show_firstpage=show_firstpage,
+        show_lastpage=show_lastpage,num_pages=num_pages,page_range=newpage_range)
+
+@mainapp.get('/edit/<page:int>')
+@auth
+def edit(page = 1):
+    """
+        进行互评
+    """
+    log.info("edit")
+    user = request.get_cookie('user',secret="chermong")
+    user = db.user.find_one({'name':user})
+    schoolid,option = request.query.get('schoolid'),request.query.get('option')
+    db.assessment.update({'schoolid':user['schoolid'],"pro-others.schoolid":schoolid},{"$set":{"pro-others.$.option":option}})
+    pro_others = list(db.assessment.find_one({'schoolid':user['schoolid']},fields = ['pro-others'])['pro-others'])
+    options = list(db.options.find())#因为返回的是一个类似的list的cursor,但是它只能循环一次,所以将它转换为list
+    
+    paginator = Paginator(pro_others,10,0)
+    pro_others = paginator.page(page)
+    page_range,num_pages = paginator.page_range,paginator.num_pages
+    show_firstpage = False if int(page) == 1 else True
+    show_lastpage = False if int(page) == num_pages else True
+    show_pages = 5 
+    if num_pages <= show_pages:#当数量不足时
+        newpage_range = page_range
+    else:
+        newpage_range = list()
+        if int(page) + show_pages > num_pages:#用于显示后几位
+            for pagenum in range(num_pages - show_pages + 1,num_pages + 1):
+                newpage_range.append(pagenum)
+        else:
+            for pagenum in range(int(page),int(page)+show_pages):
+                newpage_range.append(pagenum)
+    
+    return jinja2_template('edit-assessment.html',user = user,app = chermongapp,
+        options = options,pro_others = pro_others,show_firstpage=show_firstpage,
+        show_lastpage=show_lastpage,num_pages=num_pages,page_range=newpage_range)

@@ -1,9 +1,6 @@
 #!/usr/bin/python
 #-*- coding:utf-8 -*-
-'''
-    author:guomeng
-    email:gnemoug@gmail.com
-'''
+
 from pymongo import Connection
 import logging.config
 
